@@ -1,0 +1,54 @@
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { createClient } from '@/lib/supabase/server'
+
+type ActionState = { error?: string; success?: boolean } | null
+
+export async function createProduct(
+  storeId: string,
+  _prevState: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'No autorizado' }
+
+  const name = (formData.get('name') as string | null)?.trim()
+  const priceRaw = formData.get('price') as string | null
+  const price = priceRaw ? parseFloat(priceRaw) : NaN
+  const tag = (formData.get('tag') as string | null)?.trim() || null
+  const description = (formData.get('description') as string | null)?.trim() || null
+  const active = formData.get('active') === 'on'
+
+  if (!name) return { error: 'El nombre es requerido' }
+  if (isNaN(price) || price < 0) return { error: 'El precio es inválido' }
+
+  const { error } = await supabase.from('products').insert({
+    name,
+    price,
+    tag,
+    description,
+    active,
+    store_id: storeId,
+    image_url: null,
+  })
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/products')
+  return { success: true }
+}
+
+export async function deleteProduct(productId: string): Promise<void> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('No autorizado')
+
+  await supabase.from('products').delete().eq('id', productId)
+  revalidatePath('/products')
+}

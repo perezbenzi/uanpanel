@@ -1,0 +1,115 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+function DashboardIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="3" width="7" height="7" rx="1.5" />
+      <rect x="3" y="14" width="7" height="7" rx="1.5" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+    </svg>
+  )
+}
+
+function ProductsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  )
+}
+
+function OrdersIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" />
+      <line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" />
+      <line x1="3" y1="18" x2="3.01" y2="18" />
+    </svg>
+  )
+}
+
+function SettingsIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </svg>
+  )
+}
+
+const NAV_ITEMS = [
+  { href: '/dashboard', label: 'Dashboard', icon: DashboardIcon, badge: null },
+  { href: '/products', label: 'Productos', icon: ProductsIcon, badge: null },
+  { href: '/orders', label: 'Órdenes', icon: OrdersIcon, badge: 3 },
+  { href: '/settings', label: 'Ajustes', icon: SettingsIcon, badge: null },
+] as const
+
+export function Sidebar() {
+  const pathname = usePathname()
+
+  return (
+    <aside className="w-[220px] h-screen sticky top-0 bg-white border-r border-[#e4e4e7] flex flex-col flex-shrink-0">
+      {/* Logo */}
+      <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-[#e4e4e7]">
+        <div className="w-[28px] h-[28px] bg-black rounded-[6px] flex items-center justify-center flex-shrink-0">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="1" width="5" height="5" rx="1" fill="white" />
+            <rect x="8" y="1" width="5" height="5" rx="1" fill="white" />
+            <rect x="1" y="8" width="5" height="5" rx="1" fill="white" />
+            <rect x="8" y="8" width="5" height="5" rx="1" fill="white" />
+          </svg>
+        </div>
+        <span className="font-semibold text-[14px] text-black tracking-tight">AdminPanel</span>
+      </div>
+
+      {/* Nav */}
+      <nav className="flex-1 px-2 py-3 flex flex-col gap-0.5 overflow-y-auto">
+        {NAV_ITEMS.map(({ href, label, icon: Icon, badge }) => {
+          const isActive = pathname === href || pathname.startsWith(href + '/')
+          return (
+            <Link
+              key={href}
+              href={href}
+              className={[
+                'flex items-center gap-2.5 px-3 py-[7px] rounded-[8px] text-[13.5px] transition-colors',
+                isActive
+                  ? 'bg-[#f4f4f5] text-black font-semibold'
+                  : 'text-[#71717a] font-medium hover:bg-[#f4f4f5] hover:text-black',
+              ].join(' ')}
+            >
+              <Icon className="w-[16px] h-[16px] flex-shrink-0" />
+              <span className="flex-1">{label}</span>
+              {badge !== null && (
+                <span className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-none">
+                  {badge}
+                </span>
+              )}
+            </Link>
+          )
+        })}
+      </nav>
+
+      {/* Bottom user section */}
+      <div className="px-3 py-3 border-t border-[#e4e4e7]">
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[#f4f4f5] transition-colors cursor-pointer">
+          <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center flex-shrink-0">
+            <span className="text-[11px] font-bold text-white">CM</span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[13px] font-semibold text-black truncate">Clara Mendez</p>
+            <p className="text-[11px] text-[#a1a1aa] leading-tight">owner</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+  )
+}
