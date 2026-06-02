@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 function DashboardIcon({ className }: { className?: string }) {
   return (
@@ -48,13 +49,28 @@ function SettingsIcon({ className }: { className?: string }) {
 
 const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: DashboardIcon, badge: null },
-  { href: '/products', label: 'Productos', icon: ProductsIcon, badge: null },
-  { href: '/orders', label: 'Órdenes', icon: OrdersIcon, badge: 3 },
-  { href: '/settings', label: 'Ajustes', icon: SettingsIcon, badge: null },
+  { href: '/products', label: 'Products', icon: ProductsIcon, badge: null },
+  { href: '/orders', label: 'Orders', icon: OrdersIcon, badge: null },
+  { href: '/settings', label: 'Settings', icon: SettingsIcon, badge: null },
 ] as const
 
-export function Sidebar() {
+function getInitials(name: string): string {
+  if (!name) return '?'
+  if (name.includes('@')) return name.split('@')[0].slice(0, 2).toUpperCase()
+  const parts = name.trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
+
+export function Sidebar({ userName, tenantName }: { userName: string; tenantName: string }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function handleLogout() {
+    const supabase = createClient()
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
 
   return (
     <aside className="w-[220px] h-screen sticky top-0 bg-white border-r border-[#e4e4e7] flex flex-col flex-shrink-0">
@@ -68,7 +84,12 @@ export function Sidebar() {
             <rect x="8" y="8" width="5" height="5" rx="1" fill="white" />
           </svg>
         </div>
-        <span className="font-semibold text-[14px] text-black tracking-tight">AdminPanel</span>
+        <div className="flex flex-col min-w-0">
+          <span className="font-semibold text-[14px] text-black tracking-tight leading-tight">AdminPanel</span>
+          {tenantName && (
+            <span className="text-[11px] text-[#a1a1aa] font-medium truncate leading-tight">{tenantName}</span>
+          )}
+        </div>
       </div>
 
       {/* Nav */}
@@ -100,14 +121,23 @@ export function Sidebar() {
 
       {/* Bottom user section */}
       <div className="px-3 py-3 border-t border-[#e4e4e7]">
-        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px] hover:bg-[#f4f4f5] transition-colors cursor-pointer">
+        <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px]">
           <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center flex-shrink-0">
-            <span className="text-[11px] font-bold text-white">CM</span>
+            <span className="text-[11px] font-bold text-white">{getInitials(userName)}</span>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-semibold text-black truncate">Clara Mendez</p>
+            <p className="text-[13px] font-semibold text-black truncate">{userName || '—'}</p>
             <p className="text-[11px] text-[#a1a1aa] leading-tight">owner</p>
           </div>
+          <button
+            onClick={handleLogout}
+            title="Sign out"
+            className="w-7 h-7 flex items-center justify-center rounded-[6px] text-[#a1a1aa] hover:text-black hover:bg-[#f4f4f5] transition-colors flex-shrink-0"
+          >
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M6 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3M10 10l3-2.5L10 5M13 7.5H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
         </div>
       </div>
     </aside>

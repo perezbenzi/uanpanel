@@ -1,4 +1,4 @@
-export type OrderStatus = 'nuevo' | 'en_preparacion' | 'entregado' | 'cancelado'
+export type OrderStatus = 'pending' | 'confirmed' | 'ready' | 'collected' | 'cancelled'
 
 // type (not interface) so these satisfy extends Record<string, unknown> for Supabase generics
 export type Product = {
@@ -19,6 +19,7 @@ export type Order = {
   total: number
   status: OrderStatus
   store_id: string
+  tenant_id: string | null
 }
 
 export type OrderItem = {
@@ -60,7 +61,7 @@ export type Database = {
       >
       orders: TableDef<
         Order,
-        Omit<Order, 'id' | 'created_at'> & { id?: string; created_at?: string },
+        Omit<Order, 'id' | 'created_at' | 'tenant_id'> & { id?: string; created_at?: string; tenant_id?: string | null },
         Partial<Order>
       >
       order_items: TableDef<OrderItem, OrderItem, Partial<OrderItem>>

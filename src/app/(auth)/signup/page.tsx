@@ -9,20 +9,20 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 
 const signupSchema = z.object({
-  inviteCode: z.string().min(8, { error: 'El código debe tener al menos 8 caracteres' }),
-  firstName: z.string().min(1, { error: 'Requerido' }),
-  lastName: z.string().min(1, { error: 'Requerido' }),
-  email: z.email({ error: 'Ingresá un email válido' }),
-  password: z.string().min(8, { error: 'Mínimo 8 caracteres' }),
-  terms: z.boolean().refine((v) => v === true, { error: 'Debés aceptar los términos' }),
+  inviteCode: z.string().min(8, { error: 'Code must be at least 8 characters' }),
+  firstName: z.string().min(1, { error: 'Required' }),
+  lastName: z.string().min(1, { error: 'Required' }),
+  email: z.email({ error: 'Enter a valid email' }),
+  password: z.string().min(8, { error: 'Minimum 8 characters' }),
+  terms: z.boolean().refine((v) => v === true, { error: 'You must accept the terms' }),
 })
 
 type SignupForm = z.infer<typeof signupSchema>
 
 const steps = [
-  { label: 'Invitación' },
-  { label: 'Tu cuenta' },
-  { label: 'Listo' },
+  { label: 'Invitation' },
+  { label: 'Your account' },
+  { label: 'Done' },
 ]
 
 export default function SignupPage() {
@@ -87,13 +87,13 @@ export default function SignupPage() {
             href="/login"
             className="pb-2.5 px-1 text-sm font-medium text-[#71717a] border-b-2 border-transparent -mb-px hover:text-black transition-colors"
           >
-            Iniciar sesión
+            Sign in
           </Link>
           <button
             type="button"
             className="pb-2.5 px-1 text-sm font-semibold text-black border-b-2 border-black -mb-px"
           >
-            Registrarse
+            Sign up
           </button>
         </div>
 
@@ -151,7 +151,7 @@ export default function SignupPage() {
           {/* Invitation code */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="inviteCode" className="text-sm font-medium text-black">
-              Código de invitación
+              Invitation code
             </label>
             <div className="relative">
               <input
@@ -164,7 +164,7 @@ export default function SignupPage() {
               />
               {isCodeValid && (
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-green-50 text-green-600 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-green-200">
-                  Válido
+                  Valid
                 </span>
               )}
             </div>
@@ -177,12 +177,12 @@ export default function SignupPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
               <label htmlFor="firstName" className="text-sm font-medium text-black">
-                Nombre
+                First name
               </label>
               <input
                 id="firstName"
                 type="text"
-                placeholder="Juan"
+                placeholder="John"
                 {...register('firstName')}
                 className="h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors"
               />
@@ -192,12 +192,12 @@ export default function SignupPage() {
             </div>
             <div className="flex flex-col gap-1.5">
               <label htmlFor="lastName" className="text-sm font-medium text-black">
-                Apellido
+                Last name
               </label>
               <input
                 id="lastName"
                 type="text"
-                placeholder="García"
+                placeholder="Smith"
                 {...register('lastName')}
                 className="h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors"
               />
@@ -210,13 +210,13 @@ export default function SignupPage() {
           {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className="text-sm font-medium text-black">
-              Email
+              Email address
             </label>
             <input
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="tu@email.com"
+              placeholder="you@email.com"
               {...register('email')}
               className="h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors"
             />
@@ -228,7 +228,7 @@ export default function SignupPage() {
           {/* Password */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="password" className="text-sm font-medium text-black">
-              Contraseña
+              Password
             </label>
             <input
               id="password"
@@ -238,7 +238,7 @@ export default function SignupPage() {
               {...register('password')}
               className="h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors"
             />
-            <p className="text-[12px] text-[#a1a1aa]">Mínimo 8 caracteres</p>
+            <p className="text-[12px] text-[#a1a1aa]">Minimum 8 characters</p>
             {errors.password && (
               <p className="text-[13px] text-red-500">{errors.password.message}</p>
             )}
@@ -253,13 +253,13 @@ export default function SignupPage() {
                 className="mt-0.5 w-4 h-4 rounded border-[#e4e4e7] accent-black cursor-pointer flex-shrink-0"
               />
               <span className="text-[13px] text-[#71717a] leading-snug">
-                Acepto los{' '}
+                I agree to the{' '}
                 <Link href="/terms" className="text-black underline underline-offset-2 hover:no-underline">
-                  Términos de uso
+                  Terms of use
                 </Link>{' '}
-                y{' '}
+                and{' '}
                 <Link href="/privacy" className="text-black underline underline-offset-2 hover:no-underline">
-                  Política de privacidad
+                  Privacy policy
                 </Link>
               </span>
             </label>
@@ -274,7 +274,7 @@ export default function SignupPage() {
             disabled={isSubmitting}
             className="h-[42px] w-full bg-black text-white rounded-[10px] text-sm font-semibold hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
           >
-            {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
+            {isSubmitting ? 'Creating account...' : 'Create account'}
           </button>
 
           {/* Auth error */}

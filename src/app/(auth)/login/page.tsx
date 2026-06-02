@@ -9,8 +9,8 @@ import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 
 const loginSchema = z.object({
-  email: z.email({ error: 'Ingresá un email válido' }),
-  password: z.string().min(8, { error: 'Mínimo 8 caracteres' }),
+  email: z.email({ error: 'Enter a valid email' }),
+  password: z.string().min(8, { error: 'Minimum 8 characters' }),
 })
 
 type LoginForm = z.infer<typeof loginSchema>
@@ -33,7 +33,7 @@ export default function LoginPage() {
       password: data.password,
     })
     if (error) {
-      setAuthError('Email o contraseña incorrectos')
+      setAuthError('Incorrect email or password')
       return
     }
     router.push('/dashboard')
@@ -61,13 +61,13 @@ export default function LoginPage() {
             type="button"
             className="pb-2.5 px-1 text-sm font-semibold text-black border-b-2 border-black -mb-px"
           >
-            Iniciar sesión
+            Sign in
           </button>
           <Link
             href="/signup"
             className="pb-2.5 px-1 text-sm font-medium text-[#71717a] border-b-2 border-transparent -mb-px hover:text-black transition-colors"
           >
-            Registrarse
+            Sign up
           </Link>
         </div>
 
@@ -75,13 +75,13 @@ export default function LoginPage() {
           {/* Email */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="email" className="text-sm font-medium text-black">
-              Email
+              Email address
             </label>
             <input
               id="email"
               type="email"
               autoComplete="email"
-              placeholder="tu@email.com"
+              placeholder="you@email.com"
               {...register('email')}
               className="h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors"
             />
@@ -94,13 +94,13 @@ export default function LoginPage() {
           <div className="flex flex-col gap-1.5">
             <div className="flex items-center justify-between">
               <label htmlFor="password" className="text-sm font-medium text-black">
-                Contraseña
+                Password
               </label>
               <Link
                 href="/forgot-password"
                 className="text-[13px] text-[#71717a] hover:text-black transition-colors"
               >
-                ¿Olvidaste tu contraseña?
+                Forgot your password?
               </Link>
             </div>
             <input
@@ -122,7 +122,7 @@ export default function LoginPage() {
             disabled={isSubmitting}
             className="h-[42px] w-full bg-black text-white rounded-[10px] text-sm font-semibold hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
           >
-            {isSubmitting ? 'Ingresando...' : 'Iniciar sesión'}
+            {isSubmitting ? 'Signing in...' : 'Sign in'}
           </button>
 
           {/* Auth error */}

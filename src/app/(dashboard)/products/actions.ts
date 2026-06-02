@@ -14,7 +14,7 @@ export async function createProduct(
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) return { error: 'No autorizado' }
+  if (!user) return { error: 'Unauthorized' }
 
   const name = (formData.get('name') as string | null)?.trim()
   const priceRaw = formData.get('price') as string | null
@@ -23,8 +23,8 @@ export async function createProduct(
   const description = (formData.get('description') as string | null)?.trim() || null
   const active = formData.get('active') === 'on'
 
-  if (!name) return { error: 'El nombre es requerido' }
-  if (isNaN(price) || price < 0) return { error: 'El precio es inválido' }
+  if (!name) return { error: 'Name is required' }
+  if (isNaN(price) || price < 0) return { error: 'Invalid price' }
 
   const { error } = await supabase.from('products').insert({
     name,
@@ -47,7 +47,7 @@ export async function deleteProduct(productId: string): Promise<void> {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) throw new Error('No autorizado')
+  if (!user) throw new Error('Unauthorized')
 
   await supabase.from('products').delete().eq('id', productId)
   revalidatePath('/products')

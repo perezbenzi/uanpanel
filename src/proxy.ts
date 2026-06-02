@@ -21,6 +21,11 @@ export async function proxy(request: NextRequest) {
   )
   const isAuth = AUTH_ROUTES.includes(pathname)
 
+  if (pathname === '/') {
+    const dest = user ? '/dashboard' : '/login'
+    return NextResponse.redirect(new URL(dest, request.nextUrl))
+  }
+
   if (isDashboard && !user) {
     return NextResponse.redirect(new URL('/login', request.nextUrl))
   }

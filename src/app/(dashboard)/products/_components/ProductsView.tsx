@@ -47,7 +47,7 @@ function AddProductModal({
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-[#e4e4e7]">
-          <h2 className="text-[15px] font-semibold text-black">Nuevo producto</h2>
+          <h2 className="text-[15px] font-semibold text-black">New product</h2>
           <button
             type="button"
             onClick={onClose}
@@ -64,14 +64,14 @@ function AddProductModal({
           {/* Nombre */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="name" className="text-sm font-medium text-black">
-              Nombre <span className="text-red-500">*</span>
+              Name <span className="text-red-500">*</span>
             </label>
             <input
               id="name"
               type="text"
               name="name"
               required
-              placeholder="Ej. Torta de chocolate"
+              placeholder="e.g. Chocolate cake"
               className={INPUT_CLASS}
             />
           </div>
@@ -79,7 +79,7 @@ function AddProductModal({
           {/* Precio */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="price" className="text-sm font-medium text-black">
-              Precio <span className="text-red-500">*</span>
+              Price <span className="text-red-500">*</span>
             </label>
             <input
               id="price"
@@ -97,13 +97,13 @@ function AddProductModal({
           <div className="flex flex-col gap-1.5">
             <label htmlFor="tag" className="text-sm font-medium text-black">
               Tag{' '}
-              <span className="text-[12px] font-normal text-[#a1a1aa]">(opcional)</span>
+              <span className="text-[12px] font-normal text-[#a1a1aa]">(optional)</span>
             </label>
             <input
               id="tag"
               type="text"
               name="tag"
-              placeholder="Ej. sin-gluten"
+              placeholder="e.g. gluten-free"
               className={INPUT_CLASS}
             />
           </div>
@@ -111,14 +111,14 @@ function AddProductModal({
           {/* Descripción */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="description" className="text-sm font-medium text-black">
-              Descripción{' '}
-              <span className="text-[12px] font-normal text-[#a1a1aa]">(opcional)</span>
+              Description{' '}
+              <span className="text-[12px] font-normal text-[#a1a1aa]">(optional)</span>
             </label>
             <textarea
               id="description"
               name="description"
               rows={3}
-              placeholder="Descripción del producto..."
+              placeholder="Product description..."
               className="w-full bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 py-2.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors resize-none"
             />
           </div>
@@ -131,7 +131,7 @@ function AddProductModal({
               defaultChecked
               className="w-4 h-4 rounded accent-black"
             />
-            <span className="text-[13px] font-medium text-black">Publicar como activo</span>
+            <span className="text-[13px] font-medium text-black">Publish as active</span>
           </label>
 
           {/* Error */}
@@ -144,14 +144,14 @@ function AddProductModal({
               onClick={onClose}
               className="h-[38px] px-4 text-[13px] font-semibold text-[#71717a] bg-[#f4f4f5] rounded-[8px] hover:bg-[#e4e4e7] transition-colors"
             >
-              Cancelar
+              Cancel
             </button>
             <button
               type="submit"
               disabled={pending}
               className="h-[38px] px-4 text-[13px] font-semibold text-white bg-black rounded-[8px] hover:bg-[#1a1a1a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {pending ? 'Guardando...' : 'Guardar producto'}
+              {pending ? 'Saving...' : 'Save product'}
             </button>
           </div>
         </form>
@@ -172,7 +172,7 @@ export function ProductsView({
   const [, startDelete] = useTransition()
 
   function handleDelete(productId: string, name: string) {
-    if (!window.confirm(`¿Eliminar "${name}"?\nEsta acción no se puede deshacer.`)) return
+    if (!window.confirm(`Delete "${name}"?\nThis action cannot be undone.`)) return
     setDeletingId(productId)
     startDelete(async () => {
       await deleteProduct(productId)
@@ -186,9 +186,9 @@ export function ProductsView({
       <div className="flex items-start justify-between mb-7">
         <div>
           <p className="text-[12px] text-[#a1a1aa] font-medium mb-0.5">
-            AdminPanel &rsaquo; Productos
+            AdminPanel &rsaquo; Products
           </p>
-          <h1 className="text-[22px] font-bold text-black leading-tight">Productos</h1>
+          <h1 className="text-[22px] font-bold text-black leading-tight">Products</h1>
         </div>
         <button
           onClick={() => setModalOpen(true)}
@@ -197,7 +197,7 @@ export function ProductsView({
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M7 2v10M2 7h10" stroke="white" strokeWidth="2" strokeLinecap="round" />
           </svg>
-          Agregar producto
+          Add product
         </button>
       </div>
 
@@ -220,16 +220,16 @@ export function ProductsView({
               <line x1="3" y1="6" x2="21" y2="6" />
               <path d="M16 10a4 4 0 0 1-8 0" />
             </svg>
-            <p className="text-[14px] font-semibold text-[#71717a]">No hay productos todavía</p>
+            <p className="text-[14px] font-semibold text-[#71717a]">No products yet</p>
             <p className="text-[13px] text-[#a1a1aa]">
-              Hacé clic en &quot;Agregar producto&quot; para comenzar
+              Click &quot;Add product&quot; to get started
             </p>
           </div>
         ) : (
           <table className="w-full">
             <thead>
               <tr className="bg-[#f9f9f9] border-b border-[#e4e4e7]">
-                {['Nombre', 'Tag', 'Precio', 'Estado', 'Acciones'].map((col) => (
+                {['Name', 'Tag', 'Price', 'Status', 'Actions'].map((col) => (
                   <th
                     key={col}
                     className="px-5 py-3 text-left text-[11px] font-semibold text-[#71717a] uppercase tracking-wide"
@@ -264,12 +264,12 @@ export function ProductsView({
                     {product.active ? (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-green-50 text-green-600 border border-green-100">
                         <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                        Activo
+                        Active
                       </span>
                     ) : (
                       <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#a1a1aa]" />
-                        Inactivo
+                        Inactive
                       </span>
                     )}
                   </td>
@@ -279,7 +279,7 @@ export function ProductsView({
                       disabled={deletingId !== null}
                       className="text-[13px] font-medium text-red-500 hover:text-red-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      {deletingId === product.id ? 'Eliminando...' : 'Eliminar'}
+                      {deletingId === product.id ? 'Deleting...' : 'Delete'}
                     </button>
                   </td>
                 </tr>
