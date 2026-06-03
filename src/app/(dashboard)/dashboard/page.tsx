@@ -126,12 +126,12 @@ export default async function DashboardPage() {
           <h1 className="text-[22px] font-bold text-black leading-tight">Dashboard</h1>
         </div>
         <div className="flex items-center gap-3 mt-1">
-          <button className="flex items-center gap-1.5 h-[36px] px-4 bg-black text-white text-[13px] font-semibold rounded-[8px] hover:bg-[#1a1a1a] transition-colors">
+          <a href="/products" className="flex items-center gap-1.5 h-[36px] px-4 bg-black text-white text-[13px] font-semibold rounded-[8px] hover:bg-[#1a1a1a] transition-colors">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 2v10M2 7h10" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
             New product
-          </button>
+          </a>
         </div>
       </div>
 

@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
+import { validateInviteCode, markInviteCodeUsed } from './actions'
 
 const signupSchema = z.object({
   inviteCode: z.string().min(8, { error: 'Code must be at least 8 characters' }),
@@ -14,7 +15,6 @@ const signupSchema = z.object({
   lastName: z.string().min(1, { error: 'Required' }),
   email: z.email({ error: 'Enter a valid email' }),
   password: z.string().min(8, { error: 'Minimum 8 characters' }),
-  terms: z.boolean().refine((v) => v === true, { error: 'You must accept the terms' }),
 })
 
 type SignupForm = z.infer<typeof signupSchema>
@@ -34,6 +34,7 @@ export default function SignupPage() {
     register,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<SignupForm>({ resolver: zodResolver(signupSchema) })
 
@@ -43,10 +44,15 @@ export default function SignupPage() {
     setValue('inviteCode', upper, { shouldValidate: true })
   }
 
-  const isCodeValid = inviteCodeValue.length >= 8
-
   async function onSubmit(data: SignupForm) {
     setAuthError(null)
+
+    const result = await validateInviteCode(data.inviteCode)
+    if (!result.valid) {
+      setError('inviteCode', { message: result.error })
+      return
+    }
+
     const supabase = createClient()
     const { error } = await supabase.auth.signUp({
       email: data.email,
@@ -55,6 +61,7 @@ export default function SignupPage() {
         data: {
           first_name: data.firstName,
           last_name: data.lastName,
+          store_id: result.storeId,
         },
       },
     })
@@ -62,6 +69,7 @@ export default function SignupPage() {
       setAuthError(error.message)
       return
     }
+    await markInviteCodeUsed(data.inviteCode)
     router.push('/dashboard')
   }
 
@@ -160,13 +168,8 @@ export default function SignupPage() {
                 placeholder="XXXXXXXX"
                 value={inviteCodeValue}
                 onChange={handleInviteCodeChange}
-                className="h-[42px] w-full bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 pr-20 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors uppercase tracking-widest"
+                className="h-[42px] w-full bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors uppercase tracking-widest"
               />
-              {isCodeValid && (
-                <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-green-50 text-green-600 text-[11px] font-semibold px-2 py-0.5 rounded-full border border-green-200">
-                  Valid
-                </span>
-              )}
             </div>
             {errors.inviteCode && (
               <p className="text-[13px] text-red-500">{errors.inviteCode.message}</p>
@@ -241,30 +244,6 @@ export default function SignupPage() {
             <p className="text-[12px] text-[#a1a1aa]">Minimum 8 characters</p>
             {errors.password && (
               <p className="text-[13px] text-red-500">{errors.password.message}</p>
-            )}
-          </div>
-
-          {/* Terms checkbox */}
-          <div className="flex flex-col gap-1">
-            <label className="flex items-start gap-2.5 cursor-pointer">
-              <input
-                type="checkbox"
-                {...register('terms')}
-                className="mt-0.5 w-4 h-4 rounded border-[#e4e4e7] accent-black cursor-pointer flex-shrink-0"
-              />
-              <span className="text-[13px] text-[#71717a] leading-snug">
-                I agree to the{' '}
-                <Link href="/terms" className="text-black underline underline-offset-2 hover:no-underline">
-                  Terms of use
-                </Link>{' '}
-                and{' '}
-                <Link href="/privacy" className="text-black underline underline-offset-2 hover:no-underline">
-                  Privacy policy
-                </Link>
-              </span>
-            </label>
-            {errors.terms && (
-              <p className="text-[13px] text-red-500 ml-6">{errors.terms.message}</p>
             )}
           </div>
 

@@ -14,14 +14,10 @@ export async function updateOrderStatus(
   } = await supabase.auth.getUser()
   if (!user) return { error: 'Unauthorized' }
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('orders')
     .update({ status })
     .eq('id', orderId)
-    .select('id, status')
-
-  console.log('[updateOrderStatus] orderId:', orderId, 'status:', status)
-  console.log('[updateOrderStatus] result:', { data, error })
 
   if (error) return { error: error.message }
 

@@ -9,6 +9,7 @@ type Product = {
   tag: string | null
   price: number
   active: boolean
+  description: string | null
 }
 
 const INPUT_CLASS =

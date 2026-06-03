@@ -49,6 +49,18 @@ export async function deleteProduct(productId: string): Promise<void> {
   } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
 
+  const storeId = user.user_metadata.store_id as string | undefined
+  if (!storeId) throw new Error('Unauthorized')
+
+  const { data: product } = await supabase
+    .from('products')
+    .select('store_id')
+    .eq('id', productId)
+    .single()
+
+  if (!product) throw new Error('Product not found')
+  if (product.store_id !== storeId) throw new Error('Unauthorized')
+
   await supabase.from('products').delete().eq('id', productId)
   revalidatePath('/products')
 }
