@@ -30,11 +30,8 @@ export default async function DashboardLayout({
     .limit(1)
     .maybeSingle()
 
-  const meta = user.user_metadata as { first_name?: string; last_name?: string } | undefined
   const userName =
-    meta?.first_name && meta?.last_name
-      ? `${meta.first_name} ${meta.last_name}`
-      : (meta?.first_name ?? user.email ?? '')
+    (user.user_metadata?.display_name as string | undefined) || user.email || ''
 
   return (
     <SessionProvider tenantId={tenant?.id ?? ''} storeId={store?.store_id ?? ''}>
