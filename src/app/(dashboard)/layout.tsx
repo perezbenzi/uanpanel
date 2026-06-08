@@ -30,14 +30,23 @@ export default async function DashboardLayout({
     .limit(1)
     .maybeSingle()
 
+  const meta = user.user_metadata ?? {}
+  const displayName = meta.display_name as string | undefined
+  const firstName = meta.first_name as string | undefined
+  const lastName = meta.last_name as string | undefined
   const userName =
-    (user.user_metadata?.display_name as string | undefined) || user.email || ''
+    displayName ||
+    (firstName || lastName
+      ? `${firstName ?? ''} ${lastName ?? ''}`.trim()
+      : '') ||
+    user.email ||
+    ''
 
   return (
     <SessionProvider tenantId={tenant?.id ?? ''} storeId={store?.store_id ?? ''}>
       <div className="flex h-screen overflow-hidden bg-[#f9f9f9]">
         <Sidebar userName={userName} tenantName={tenant?.name ?? ''} />
-        <main className="flex-1 overflow-y-auto min-w-0">{children}</main>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden min-w-0">{children}</main>
       </div>
     </SessionProvider>
   )

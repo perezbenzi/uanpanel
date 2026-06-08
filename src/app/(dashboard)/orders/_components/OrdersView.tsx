@@ -39,7 +39,7 @@ const FILTERS: { value: OrderStatus | 'all'; label: string }[] = [
 ]
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('es-AR', {
+  return new Date(iso).toLocaleDateString('en-AU', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',

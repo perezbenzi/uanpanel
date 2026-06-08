@@ -2,7 +2,7 @@
 
 import { useRef, useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { createProduct, deleteProduct, updateProduct } from '../actions'
+import { createProduct, deleteProduct, updateProduct, toggleProductActive } from '../actions'
 import { ConfirmModal } from '@/components/ui/ConfirmModal'
 
 type Product = {
@@ -93,6 +93,37 @@ async function uploadImage(file: File, storeId: string): Promise<{ url: string }
   if (error) return { error: error.message }
   const { data } = supabase.storage.from('store-assets').getPublicUrl(path)
   return { url: data.publicUrl }
+}
+
+// ─── Status toggle badge ──────────────────────────────────────────────────────
+
+function StatusToggle({ productId, active }: { productId: string; active: boolean }) {
+  const [pending, startTransition] = useTransition()
+
+  return (
+    <button
+      onClick={() =>
+        startTransition(async () => {
+          await toggleProductActive(productId, !active)
+        })
+      }
+      disabled={pending}
+      className={[
+        'inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold border transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+        active
+          ? 'bg-green-50 text-green-600 border-green-100 hover:bg-green-100'
+          : 'bg-[#f4f4f5] text-[#71717a] border-[#e4e4e7] hover:bg-[#e4e4e7]',
+      ].join(' ')}
+    >
+      <span
+        className={[
+          'w-1.5 h-1.5 rounded-full',
+          active ? 'bg-green-500' : 'bg-[#a1a1aa]',
+        ].join(' ')}
+      />
+      {active ? 'Active' : 'Inactive'}
+    </button>
+  )
 }
 
 // ─── Add product modal ────────────────────────────────────────────────────────
@@ -521,17 +552,7 @@ export function ProductsView({
                     ${product.price.toFixed(2)}
                   </td>
                   <td className="px-5 py-3.5">
-                    {product.active ? (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-green-50 text-green-600 border border-green-100">
-                        <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                        Active
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#a1a1aa]" />
-                        Inactive
-                      </span>
-                    )}
+                    <StatusToggle productId={product.id} active={product.active} />
                   </td>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">

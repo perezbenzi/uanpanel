@@ -81,6 +81,51 @@ export async function deleteProduct(productId: string): Promise<void> {
   revalidatePath('/products')
 }
 
+export async function toggleProductActive(
+  productId: string,
+  newActiveValue: boolean,
+): Promise<void> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: tenant } = await supabase
+    .from('tenants')
+    .select('id')
+    .eq('owner_id', user.id)
+    .maybeSingle()
+
+  if (!tenant) throw new Error('Unauthorized')
+
+  const { data: store } = await supabase
+    .from('stores')
+    .select('store_id')
+    .eq('tenant_id', tenant.id)
+    .limit(1)
+    .maybeSingle()
+
+  if (!store) throw new Error('Unauthorized')
+
+  const { data: product } = await supabase
+    .from('products')
+    .select('store_id')
+    .eq('id', productId)
+    .single()
+
+  if (!product) throw new Error('Product not found')
+  if (product.store_id !== store.store_id) throw new Error('Unauthorized')
+
+  await supabase
+    .from('products')
+    .update({ active: newActiveValue })
+    .eq('id', productId)
+
+  revalidatePath('/products')
+  revalidatePath('/dashboard')
+}
+
 export async function updateProduct(
   productId: string,
   storeId: string,

@@ -10,9 +10,15 @@ export default async function SettingsPage() {
   } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const meta = user.user_metadata ?? {}
+  const displayName = (meta.display_name as string | undefined) ||
+    (meta.first_name || meta.last_name
+      ? `${meta.first_name ?? ''} ${meta.last_name ?? ''}`.trim()
+      : '')
+
   return (
     <SettingsView
-      displayName={user.user_metadata?.display_name ?? ''}
+      displayName={displayName}
       email={user.email ?? ''}
     />
   )
