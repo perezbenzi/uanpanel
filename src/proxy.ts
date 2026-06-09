@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/middleware'
 
-const DASHBOARD_ROUTES = ['/dashboard', '/products', '/orders']
+const PROTECTED_ROUTES = ['/dashboard', '/products', '/orders', '/settings']
 const AUTH_ROUTES = ['/login', '/signup']
 
 export async function proxy(request: NextRequest) {
@@ -16,17 +16,12 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  const isDashboard = DASHBOARD_ROUTES.some(
+  const isProtected = PROTECTED_ROUTES.some(
     (r) => pathname === r || pathname.startsWith(r + '/')
   )
   const isAuth = AUTH_ROUTES.includes(pathname)
 
-  if (pathname === '/') {
-    const dest = user ? '/dashboard' : '/login'
-    return NextResponse.redirect(new URL(dest, request.nextUrl))
-  }
-
-  if (isDashboard && !user) {
+  if (isProtected && !user) {
     return NextResponse.redirect(new URL('/login', request.nextUrl))
   }
 

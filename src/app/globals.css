@@ -9,6 +9,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-instrument-serif), Georgia, serif;
+  --font-manrope: var(--font-manrope-face), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-jb-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,4 +25,42 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ─── Marketing landing design tokens ─────────────────────────────────────── */
+@theme {
+  /* Colors */
+  --color-ink:         #1c1917;
+  --color-ink-2:       #404040;
+  --color-ink-3:       #737373;
+  --color-ink-4:       #a3a3a3;
+  --color-bg:          #fafaf9;
+  --color-bg-elev:     #ffffff;
+  --color-line:        #e7e5e4;
+  --color-line-strong: #d4d4d4;
+  --color-accent:      #16a34a;
+  --color-accent-soft: #ecfdf5;
+  --color-warn-soft:   #fef3c7;
+  --color-warn-ink:    #92400e;
+  --color-info-soft:   #dbeafe;
+  --color-info-ink:    #1e40af;
+  --color-danger-soft: #fee2e2;
+  --color-danger-ink:  #991b1b;
+
+  /* Shadows (match landing source values) */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 14px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 30px 80px -20px rgba(0,0,0,0.18), 0 8px 24px -8px rgba(0,0,0,0.08);
+
+  /* Pulse animation for eyebrow dot */
+  --animate-blink: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
 }
