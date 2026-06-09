@@ -75,7 +75,7 @@ export default function SignupPage() {
 
   return (
     <div className="w-full max-w-[440px] mx-4">
-      <div className="bg-white rounded-[20px] shadow-lg px-8 py-10">
+      <div className="bg-white rounded-[20px] shadow-lg px-5 py-8 sm:px-8 sm:py-10">
         {/* Logo */}
         <div className="flex items-center gap-2.5 mb-8">
           <div className="w-[30px] h-[30px] bg-black rounded-[6px] flex items-center justify-center flex-shrink-0">
@@ -177,7 +177,7 @@ export default function SignupPage() {
           </div>
 
           {/* Name grid */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="flex flex-col gap-1.5">
               <label htmlFor="firstName" className="text-sm font-medium text-black">
                 First name

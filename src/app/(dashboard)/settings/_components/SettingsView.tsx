@@ -98,7 +98,7 @@ function ProfileForm({ displayName, email }: { displayName: string; email: strin
         </div>
 
         {/* Fields */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="display_name" className="text-[12px] font-medium text-[#71717a]">
               Display name
@@ -190,7 +190,7 @@ function PasswordForm() {
         </div>
 
         {/* New + Confirm — 2 columns */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-1.5">
             <label htmlFor="new_password" className="text-[12px] font-medium text-[#71717a]">
               New password
@@ -246,12 +246,12 @@ export function SettingsView({
   email: string
 }) {
   return (
-    <div className="p-7">
-      <div className="mb-7">
+    <div className="px-[18px] py-4 md:p-7">
+      <div className="mb-5 md:mb-7">
         <p className="text-[12px] text-[#a1a1aa] font-medium mb-0.5">
           AdminPanel &rsaquo; Settings
         </p>
-        <h1 className="text-[22px] font-bold text-black leading-tight">Settings</h1>
+        <h1 className="text-[20px] md:text-[22px] font-bold text-black leading-tight">Settings</h1>
       </div>
 
       <div className="flex flex-col gap-5 max-w-[600px]">

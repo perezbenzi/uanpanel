@@ -116,17 +116,22 @@ export default async function DashboardPage() {
   const orders = recentOrders ?? []
 
   return (
-    <div className="p-7">
+    <div className="px-[18px] py-4 md:p-7">
       {/* Topbar */}
-      <div className="flex items-start justify-between mb-7">
+      <div className="flex items-start justify-between mb-5 md:mb-7">
         <div>
           <p className="text-[12px] text-[#a1a1aa] font-medium mb-0.5">
             AdminPanel &rsaquo; Dashboard
           </p>
-          <h1 className="text-[22px] font-bold text-black leading-tight">Dashboard</h1>
+          <h1 className="text-[20px] md:text-[22px] font-bold text-black leading-tight">
+            Dashboard
+          </h1>
         </div>
         <div className="flex items-center gap-3 mt-1">
-          <a href="/products" className="flex items-center gap-1.5 h-[36px] px-4 bg-black text-white text-[13px] font-semibold rounded-[8px] hover:bg-[#1a1a1a] transition-colors">
+          <a
+            href="/products"
+            className="flex items-center gap-1.5 h-[36px] px-3 md:px-4 bg-black text-white text-[12px] md:text-[13px] font-semibold rounded-[8px] hover:bg-[#1a1a1a] transition-colors whitespace-nowrap"
+          >
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M7 2v10M2 7h10" stroke="white" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -135,17 +140,17 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-4 gap-4 mb-7">
+      {/* Stat cards — 2 cols mobile, 4 cols sm+ */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-5 md:mb-7">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-white border border-[#e4e4e7] rounded-[14px] px-5 py-5"
+            className="bg-white border border-[#e4e4e7] rounded-[14px] px-3 py-3 sm:px-5 sm:py-5"
           >
-            <p className="text-[12px] font-medium text-[#71717a] mb-2 uppercase tracking-wide">
+            <p className="text-[9px] sm:text-[11px] font-medium text-[#71717a] mb-1.5 sm:mb-2 uppercase tracking-wide leading-tight">
               {card.label}
             </p>
-            <p className={`text-[30px] font-bold leading-none ${card.valueClass}`}>
+            <p className={`text-[18px] sm:text-[26px] font-bold leading-none ${card.valueClass}`}>
               {card.value}
             </p>
           </div>
@@ -154,7 +159,7 @@ export default async function DashboardPage() {
 
       {/* Recent orders table */}
       <div className="bg-white border border-[#e4e4e7] rounded-[14px] overflow-hidden">
-        <div className="px-5 py-4 border-b border-[#e4e4e7]">
+        <div className="px-4 md:px-5 py-4 border-b border-[#e4e4e7]">
           <h2 className="text-[14px] font-semibold text-black">Recent orders</h2>
         </div>
         {orders.length === 0 ? (
@@ -162,49 +167,60 @@ export default async function DashboardPage() {
             <p className="text-[14px] text-[#71717a]">No orders yet</p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="bg-[#f9f9f9] border-b border-[#e4e4e7]">
-                {['ID', 'Customer', 'Total', 'Status', 'Date'].map((col) => (
-                  <th
-                    key={col}
-                    className="px-5 py-3 text-left text-[11px] font-semibold text-[#71717a] uppercase tracking-wide"
-                  >
-                    {col}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-[#f9f9f9] border-b border-[#e4e4e7]">
+                  <th className="hidden md:table-cell px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    ID
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order, i) => {
-                const status = STATUS_CONFIG[order.status as OrderStatus]
-                return (
-                  <tr
-                    key={order.id}
-                    className={i < orders.length - 1 ? 'border-b border-[#f4f4f5]' : ''}
-                  >
-                    <td className="px-5 py-3.5 text-[13px] font-medium text-black font-mono">
-                      #{order.id.slice(0, 8).toUpperCase()}
-                    </td>
-                    <td className="px-5 py-3.5 text-[13px] text-black">{order.customer_name}</td>
-                    <td className="px-5 py-3.5 text-[13px] font-medium text-black tabular-nums">
-                      ${(order.total as number).toFixed(2)} AUD
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${status?.className ?? 'bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]'}`}
-                      >
-                        {status?.label ?? order.status}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3.5 text-[13px] text-[#71717a]">
-                      {formatDate(order.created_at as string)}
-                    </td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Customer
+                  </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Total
+                  </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Status
+                  </th>
+                  <th className="hidden md:table-cell px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order, i) => {
+                  const status = STATUS_CONFIG[order.status as OrderStatus]
+                  return (
+                    <tr
+                      key={order.id}
+                      className={i < orders.length - 1 ? 'border-b border-[#f4f4f5]' : ''}
+                    >
+                      <td className="hidden md:table-cell px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] font-medium text-black font-mono">
+                        #{order.id.slice(0, 8).toUpperCase()}
+                      </td>
+                      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] text-black">
+                        {order.customer_name}
+                      </td>
+                      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] font-medium text-black tabular-nums">
+                        ${(order.total as number).toFixed(2)}
+                      </td>
+                      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5">
+                        <span
+                          className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] md:text-[11px] font-semibold ${status?.className ?? 'bg-[#f4f4f5] text-[#71717a] border border-[#e4e4e7]'}`}
+                        >
+                          {status?.label ?? order.status}
+                        </span>
+                      </td>
+                      <td className="hidden md:table-cell px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] text-[#71717a]">
+                        {formatDate(order.created_at as string)}
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>

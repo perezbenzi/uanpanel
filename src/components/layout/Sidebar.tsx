@@ -62,7 +62,15 @@ function getInitials(name: string): string {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
 }
 
-export function Sidebar({ userName, tenantName }: { userName: string; tenantName: string }) {
+export function Sidebar({
+  userName,
+  tenantName,
+  onLinkClick,
+}: {
+  userName: string
+  tenantName: string
+  onLinkClick?: () => void
+}) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -73,9 +81,9 @@ export function Sidebar({ userName, tenantName }: { userName: string; tenantName
   }
 
   return (
-    <aside className="w-[220px] h-screen sticky top-0 bg-white border-r border-[#e4e4e7] flex flex-col flex-shrink-0">
+    <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-[#e4e4e7]">
+      <div className="flex items-center gap-2.5 px-4 h-[60px] border-b border-[#e4e4e7] flex-shrink-0">
         <div className="w-[28px] h-[28px] bg-black rounded-[6px] flex items-center justify-center flex-shrink-0">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1" y="1" width="5" height="5" rx="1" fill="white" />
@@ -85,9 +93,13 @@ export function Sidebar({ userName, tenantName }: { userName: string; tenantName
           </svg>
         </div>
         <div className="flex flex-col min-w-0">
-          <span className="font-semibold text-[14px] text-black tracking-tight leading-tight">AdminPanel</span>
+          <span className="font-semibold text-[14px] text-black tracking-tight leading-tight">
+            AdminPanel
+          </span>
           {tenantName && (
-            <span className="text-[11px] text-[#a1a1aa] font-medium truncate leading-tight">{tenantName}</span>
+            <span className="text-[11px] text-[#a1a1aa] font-medium truncate leading-tight">
+              {tenantName}
+            </span>
           )}
         </div>
       </div>
@@ -100,6 +112,7 @@ export function Sidebar({ userName, tenantName }: { userName: string; tenantName
             <Link
               key={href}
               href={href}
+              onClick={onLinkClick}
               className={[
                 'flex items-center gap-2.5 px-3 py-[7px] rounded-[8px] text-[13.5px] transition-colors',
                 isActive
@@ -120,7 +133,7 @@ export function Sidebar({ userName, tenantName }: { userName: string; tenantName
       </nav>
 
       {/* Bottom user section */}
-      <div className="px-3 py-3 border-t border-[#e4e4e7]">
+      <div className="px-3 py-3 border-t border-[#e4e4e7] flex-shrink-0">
         <div className="flex items-center gap-2.5 px-2 py-2 rounded-[8px]">
           <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center flex-shrink-0">
             <span className="text-[11px] font-bold text-white">{getInitials(userName)}</span>
@@ -140,6 +153,6 @@ export function Sidebar({ userName, tenantName }: { userName: string; tenantName
           </button>
         </div>
       </div>
-    </aside>
+    </div>
   )
 }

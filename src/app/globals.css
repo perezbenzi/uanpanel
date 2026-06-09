@@ -64,3 +64,11 @@ html {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+
+/* Offsets mobile content below the fixed header (52px) + safe-area notch */
+.mobile-header-offset {
+  padding-top: calc(3.25rem + env(safe-area-inset-top, 0px));
+}
+@media (min-width: 768px) {
+  .mobile-header-offset { padding-top: 0; }
+}

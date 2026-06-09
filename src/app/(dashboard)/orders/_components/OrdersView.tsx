@@ -65,25 +65,29 @@ function OrderRow({ order }: { order: Order }) {
 
   return (
     <tr className="border-b border-[#f4f4f5] last:border-0">
-      <td className="px-5 py-3.5 text-[13px] font-medium text-black font-mono">
+      <td className="hidden md:table-cell px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] font-medium text-black font-mono">
         #{order.id.slice(0, 8).toUpperCase()}
       </td>
-      <td className="px-5 py-3.5 text-[13px] text-black">{order.customer_name}</td>
-      <td className="px-5 py-3.5 text-[13px] font-medium text-black tabular-nums">
+      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] text-black">
+        {order.customer_name}
+      </td>
+      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] font-medium text-black tabular-nums">
         ${order.total.toFixed(2)}
       </td>
-      <td className="px-5 py-3.5">
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold ${badgeClass}`}>
+      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5">
+        <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] md:text-[11px] font-semibold ${badgeClass}`}>
           {label}
         </span>
       </td>
-      <td className="px-5 py-3.5 text-[13px] text-[#71717a]">{formatDate(order.created_at)}</td>
-      <td className="px-5 py-3.5">
+      <td className="hidden md:table-cell px-[10px] md:px-5 py-[10px] md:py-3.5 text-[11px] md:text-[13px] text-[#71717a]">
+        {formatDate(order.created_at)}
+      </td>
+      <td className="px-[10px] md:px-5 py-[10px] md:py-3.5">
         <select
           value={status}
           onChange={handleStatusChange}
           disabled={pending}
-          className="h-[30px] bg-[#fafafa] border border-[#e4e4e7] rounded-[6px] px-2 text-[12px] text-black focus:outline-none focus:border-[#71717a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="h-[28px] md:h-[30px] bg-[#fafafa] border border-[#e4e4e7] rounded-[6px] px-1.5 md:px-2 text-[11px] md:text-[12px] text-black focus:outline-none focus:border-[#71717a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed max-w-[100px] md:max-w-none"
         >
           {ALL_STATUSES.map((s) => (
             <option key={s} value={s}>
@@ -103,25 +107,27 @@ export function OrdersView({ orders }: { orders: Order[] }) {
     activeFilter === 'all' ? orders : orders.filter((o) => o.status === activeFilter)
 
   return (
-    <div className="p-7">
+    <div className="px-[18px] py-4 md:p-7">
       {/* Topbar */}
-      <div className="flex items-start justify-between mb-7">
+      <div className="flex items-start justify-between mb-5 md:mb-7">
         <div>
           <p className="text-[12px] text-[#a1a1aa] font-medium mb-0.5">
             AdminPanel &rsaquo; Orders
           </p>
-          <h1 className="text-[22px] font-bold text-black leading-tight">Orders</h1>
+          <h1 className="text-[20px] md:text-[22px] font-bold text-black leading-tight">
+            Orders
+          </h1>
         </div>
       </div>
 
-      {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-5">
+      {/* Filter bar — horizontally scrollable on mobile */}
+      <div className="flex items-center gap-2 mb-5 overflow-x-auto -mx-[18px] px-[18px] pb-1 md:mx-0 md:px-0 md:overflow-visible md:pb-0 scrollbar-none">
         {FILTERS.map((f) => (
           <button
             key={f.value}
             onClick={() => setActiveFilter(f.value)}
             className={[
-              'h-[32px] px-3.5 rounded-full text-[12px] font-medium transition-colors',
+              'h-[32px] px-3.5 rounded-full text-[12px] font-medium transition-colors flex-shrink-0',
               activeFilter === f.value
                 ? 'bg-black text-white'
                 : 'bg-white border border-[#e4e4e7] text-[#71717a] hover:text-black hover:border-[#a1a1aa]',
@@ -159,25 +165,37 @@ export function OrdersView({ orders }: { orders: Order[] }) {
             </p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="bg-[#f9f9f9] border-b border-[#e4e4e7]">
-                {['ID', 'Customer', 'Total', 'Status', 'Date', 'Change status'].map((col) => (
-                  <th
-                    key={col}
-                    className="px-5 py-3 text-left text-[11px] font-semibold text-[#71717a] uppercase tracking-wide"
-                  >
-                    {col}
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-[#f9f9f9] border-b border-[#e4e4e7]">
+                  <th className="hidden md:table-cell px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    ID
                   </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Customer
+                  </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Total
+                  </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Status
+                  </th>
+                  <th className="hidden md:table-cell px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Date
+                  </th>
+                  <th className="px-[10px] md:px-5 py-2.5 md:py-3 text-left text-[10px] md:text-[11px] font-semibold text-[#71717a] uppercase tracking-wide">
+                    Change
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {filtered.map((order) => (
+                  <OrderRow key={order.id} order={order} />
                 ))}
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((order) => (
-                <OrderRow key={order.id} order={order} />
-              ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
