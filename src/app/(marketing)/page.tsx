@@ -43,7 +43,7 @@ const BTN_GHOST = `${BTN} bg-transparent text-ink border-line hover:bg-bg-elev h
 
 // ─── Status badge ─────────────────────────────────────────────────────────────
 
-type BadgeVariant = 'ready' | 'pending' | 'collected' | 'cancelled' | 'active'
+type BadgeVariant = 'ready' | 'pending' | 'collected' | 'cancelled' | 'active' | 'confirmed'
 
 const BADGE_CLS: Record<BadgeVariant, { wrap: string; dot: string }> = {
   active:    { wrap: 'bg-accent-soft text-[#166534]',  dot: 'bg-accent' },
@@ -51,6 +51,7 @@ const BADGE_CLS: Record<BadgeVariant, { wrap: string; dot: string }> = {
   ready:     { wrap: 'bg-[#f3e8ff] text-[#6b21a8]',   dot: 'bg-[#a855f7]' },
   collected: { wrap: 'bg-accent-soft text-[#166534]',  dot: 'bg-accent' },
   cancelled: { wrap: 'bg-danger-soft text-danger-ink', dot: 'bg-danger-ink' },
+  confirmed: { wrap: 'bg-warn-soft text-warn-ink',     dot: 'bg-[#f59e0b]' },
 }
 
 function StatusBadge({ variant, children }: { variant: BadgeVariant; children: React.ReactNode }) {
@@ -153,29 +154,25 @@ export default function LandingPage() {
           {/* Eyebrow */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-bg-elev text-ink-2 rounded-full text-xs font-semibold mb-6 border border-line">
             <span className="w-1.5 h-1.5 bg-ink rounded-full animate-blink" />
-            {es ? 'Cupos limitados — USD 30 los primeros 3 meses' : 'Limited spots — USD 30 for the first 3 months'}
+            {es ? 'Acceso beta · USD 10/mes los primeros 3 meses' : 'Beta access · USD 10/mo for the first 3 months'}
           </div>
 
           {/* Headline */}
           <h1 className="font-display font-normal text-[clamp(40px,6vw,72px)] leading-[1.05] tracking-[-0.02em] max-w-[880px] mx-auto mb-6">
-            {es ? (
-              <>Tu tienda online <em className="italic text-ink-2">y el panel</em> para gestionarla.</>
-            ) : (
-              <>Your online store <em className="italic text-ink-2">and the panel</em> to run it.</>
-            )}
+            {es ? 'Tu tienda online, lista para usar.' : 'Your online store, ready to use.'}
           </h1>
 
           {/* Sub */}
           <p className="text-[clamp(16px,2vw,20px)] text-ink-3 max-w-[580px] mx-auto mb-9 leading-[1.55]">
             {es
-              ? 'Recibí pedidos, gestioná precios, activá o pausá productos. Todo desde un panel diseñado a la medida de tu negocio.'
-              : 'Receive orders, manage prices, activate or pause products. All from a panel designed to fit your business.'}
+              ? 'Tienda online incluida gratis. Panel de gestión por $10/mes en beta, después $25/mes.'
+              : 'Online store included free. Management panel at $10/mo in beta, then $25/mo.'}
           </p>
 
           {/* CTA buttons */}
           <div className="flex flex-col items-stretch gap-3 mb-4 px-8 md:flex-row md:justify-center md:items-center md:flex-wrap md:px-0">
             <Link href="/signup" className={BTN_PRIMARY}>
-              {es ? 'Reservar mi tienda' : 'Reserve my store'}
+              {es ? 'Quiero mi tienda' : 'I want my store'}
               <ChevronRight />
             </Link>
             <a href="#how" className={BTN_GHOST}>
@@ -186,8 +183,8 @@ export default function LandingPage() {
           {/* Meta */}
           <p className="text-[13px] text-ink-4 mb-16 font-jb-mono">
             {es
-              ? '— E-commerce sin costo · Sin comisiones por venta · Cancelás cuando quieras'
-              : '— Free e-commerce · No sales commission · Cancel anytime'}
+              ? 'Tienda online gratis · Sin configuraciones · Cancelás cuando quieras'
+              : 'Free online store · No setup required · Cancel anytime'}
           </p>
 
           {/* ── Dashboard mockup ── */}
@@ -333,26 +330,22 @@ export default function LandingPage() {
         <div className="max-w-[1180px] mx-auto px-5 md:px-6">
           <SectionEyebrow>{es ? '— Cómo funciona' : '— How it works'}</SectionEyebrow>
           <h2 className="font-display font-normal text-[clamp(32px,4.5vw,52px)] leading-[1.1] tracking-[-0.02em] mb-4 max-w-[720px]">
-            {es ? (
-              <>Desde el primer pedido a tu <em className="italic text-ink-2">flujo diario</em>.</>
-            ) : (
-              <>From your first order to your <em className="italic text-ink-2">daily flow</em>.</>
-            )}
+            {es ? 'Así funciona tu día a día.' : 'This is your daily flow.'}
           </h2>
           <p className="text-[17px] text-ink-3 max-w-[560px] mb-14 leading-[1.55]">
             {es
-              ? 'Tres pasos. Sin curva de aprendizaje, sin dependencia técnica.'
-              : 'Three steps. No learning curve, no technical dependency.'}
+              ? 'Sin configuraciones. Solo aprendés a usar el panel.'
+              : 'No setup needed. You just learn to use the panel.'}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
             {[
               {
                 num: '01',
-                esH: 'Tu cliente compra',
-                enH: 'Your customer buys',
-                esP: 'El pedido entra desde tu e-commerce, mostrando productos, precios y stock en tiempo real.',
-                enP: 'The order comes in from your e-commerce, showing products, prices and stock in real time.',
+                esH: 'Entra el pedido',
+                enH: 'Order comes in',
+                esP: 'Tu cliente compra desde tu tienda. Vos lo ves al instante en el panel.',
+                enP: 'Your customer buys from your store. You see it instantly in the panel.',
               },
               {
                 num: '02',
@@ -388,157 +381,12 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══ TEMPLATES ═════════════════════════════════════════════════════════ */}
-      <section className="py-16 md:py-24 bg-white border-y border-line">
-        <div className="max-w-[1180px] mx-auto px-5 md:px-6">
-          <SectionEyebrow>{es ? '— Elegí tu plantilla' : '— Choose your template'}</SectionEyebrow>
-          <h2 className="font-display font-normal text-[clamp(32px,4.5vw,52px)] leading-[1.1] tracking-[-0.02em] mb-4 max-w-[720px]">
-            {es ? (
-              <>Tres estilos. <em className="italic text-ink-2">Una marca</em>: la tuya.</>
-            ) : (
-              <>Three styles. <em className="italic text-ink-2">One brand</em>: yours.</>
-            )}
-          </h2>
-          <p className="text-[17px] text-ink-3 max-w-[560px] mb-14 leading-[1.55]">
-            {es
-              ? 'Empezás con una plantilla diseñada profesionalmente. La personalizamos con tus colores, tipografía y fotos.'
-              : 'Start with a professionally designed template. We personalize it with your colors, typography and photos.'}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
-
-            {/* ── Aurora ── */}
-            <div className="bg-bg-elev border border-line rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md">
-              <div className="aspect-[4/3] overflow-hidden border-b border-line">
-                <div className="bg-white p-[18px_20px] flex flex-col h-full font-manrope">
-                  <div className="flex justify-between items-center pb-2.5 border-b border-[#f0f0f0] mb-[14px]">
-                    <span className="text-[11px] font-semibold tracking-[0.15em] text-[#111]">AURORA</span>
-                    <span className="text-[9px] text-[#999] font-jb-mono">cart (0)</span>
-                  </div>
-                  <div className="text-[18px] font-light text-[#111] mb-2.5 leading-[1.15] tracking-[-0.01em]">
-                    {es ? <>Esenciales para<br />cada día</> : <>Essentials for<br />every day</>}
-                  </div>
-                  <div className="grid grid-cols-2 gap-1.5 mt-auto">
-                    {[0, 1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="aspect-square bg-[#f7f7f7] rounded-[4px] relative after:content-[''] after:absolute after:inset-[22%] after:rounded-full after:bg-[linear-gradient(135deg,#e8e8e8,#d0d0d0)]"
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="p-[20px_22px]">
-                <div className="font-jb-mono text-[11px] text-ink-3 uppercase tracking-[0.08em] mb-2.5">Minimal · Premium</div>
-                <div className="font-display text-[22px] mb-1 tracking-[-0.01em]">Aurora</div>
-                <p className="text-[13px] text-ink-3 leading-[1.5]">
-                  {es
-                    ? 'Limpio y elegante. Ideal para marcas de diseño, cosmética o joyería artesanal.'
-                    : 'Clean and elegant. Ideal for design, cosmetics or artisan jewelry brands.'}
-                </p>
-              </div>
-            </div>
-
-            {/* ── Hearth ── */}
-            <div className="bg-bg-elev border border-line rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md">
-              <div className="aspect-[4/3] overflow-hidden border-b border-line">
-                <div
-                  className="p-[18px_20px] flex flex-col h-full font-manrope"
-                  style={{ background: 'linear-gradient(180deg, #f7f1e6 0%, #f0e8d6 100%)' }}
-                >
-                  <div className="flex justify-between items-baseline mb-4">
-                    <span className="font-display text-[16px] text-[#3d2817] italic">Hearth &amp; Co.</span>
-                    <span className="text-[8px] text-[#7a6249] uppercase tracking-[0.15em]">CARRITO</span>
-                  </div>
-                  <div className="font-display text-[22px] text-[#3d2817] italic leading-[1.05] mb-1.5 tracking-[-0.01em]">
-                    {es ? <>Hechos a mano,<br />con tiempo.</> : <>Handmade,<br />with time.</>}
-                  </div>
-                  <div className="text-[9px] text-[#7a6249] mb-3 tracking-[0.05em]">
-                    {es ? '— PRODUCCIÓN SEMANAL' : '— WEEKLY PRODUCTION'}
-                  </div>
-                  <div className="mt-auto">
-                    {[['Sourdough', '$12'], ['Carrot cake', '$28'], ['Granola', '$18']].map(([name, price]) => (
-                      <div
-                        key={name}
-                        className="flex justify-between items-center py-1.5 border-t border-[rgba(61,40,23,0.15)] text-[10px] text-[#3d2817]"
-                      >
-                        <span>{name}</span>
-                        <span className="font-jb-mono text-[#7a6249]">{price}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="p-[20px_22px]">
-                <div className="font-jb-mono text-[11px] text-ink-3 uppercase tracking-[0.08em] mb-2.5">
-                  {es ? 'Editorial · Cálido' : 'Editorial · Warm'}
-                </div>
-                <div className="font-display text-[22px] mb-1 tracking-[-0.01em]">Hearth</div>
-                <p className="text-[13px] text-ink-3 leading-[1.5]">
-                  {es
-                    ? 'Cálido y artesanal. Perfecto para bakeries, cafés o productos hechos a mano.'
-                    : 'Warm and artisanal. Perfect for bakeries, cafés or handcrafted products.'}
-                </p>
-              </div>
-            </div>
-
-            {/* ── Nocturne ── */}
-            <div className="bg-bg-elev border border-line rounded-2xl overflow-hidden flex flex-col transition-all duration-200 hover:border-line-strong hover:-translate-y-0.5 hover:shadow-md">
-              <div className="aspect-[4/3] overflow-hidden border-b border-line">
-                <div className="bg-[#0d0d0d] p-[18px_20px] flex flex-col h-full text-white font-manrope">
-                  <div className="flex justify-between items-center mb-[14px]">
-                    <span className="text-[12px] font-extrabold tracking-[0.02em]">
-                      NOCTURNE<span className="text-[#f5c842]">.</span>
-                    </span>
-                    <span className="text-[9px] text-[#888] px-2 py-[3px] border border-[#2a2a2a] rounded-full">0 items</span>
-                  </div>
-                  <div className="text-[24px] font-extrabold leading-[0.95] tracking-[-0.02em] mb-1">
-                    {es ? (
-                      <>Sabor <em className="text-[#f5c842] not-italic">sin</em><br />concesiones.</>
-                    ) : (
-                      <>Flavor <em className="text-[#f5c842] not-italic">without</em><br />concessions.</>
-                    )}
-                  </div>
-                  <div className="text-[9px] text-[#888] uppercase tracking-[0.12em] mb-[14px]">— DELIVERY · NSW</div>
-                  <div className="grid grid-cols-3 gap-[5px] mt-auto">
-                    {[
-                      'linear-gradient(135deg, #f5c842, #c89a20)',
-                      'linear-gradient(135deg, #e85a4f, #b03a30)',
-                      'linear-gradient(135deg, #6a8e4e, #4a6b35)',
-                    ].map((grad, i) => (
-                      <div key={i} className="aspect-square bg-[#1a1a1a] border border-[#2a2a2a] rounded-[3px] relative overflow-hidden">
-                        <div className="absolute inset-[25%] rounded-full opacity-85" style={{ background: grad }} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              <div className="p-[20px_22px]">
-                <div className="font-jb-mono text-[11px] text-ink-3 uppercase tracking-[0.08em] mb-2.5">
-                  {es ? 'Bold · Moderno' : 'Bold · Modern'}
-                </div>
-                <div className="font-display text-[22px] mb-1 tracking-[-0.01em]">Nocturne</div>
-                <p className="text-[13px] text-ink-3 leading-[1.5]">
-                  {es
-                    ? 'Audaz y contemporáneo. Para restaurantes, marcas urbanas o productos de nicho.'
-                    : 'Bold and contemporary. For restaurants, urban brands or niche products.'}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* ═══ FEATURES ══════════════════════════════════════════════════════════ */}
       <section className="py-16 md:py-24">
         <div className="max-w-[1180px] mx-auto px-5 md:px-6">
           <SectionEyebrow>{es ? '— Lo que incluye' : "— What's included"}</SectionEyebrow>
           <h2 className="font-display font-normal text-[clamp(32px,4.5vw,52px)] leading-[1.1] tracking-[-0.02em] mb-4 max-w-[720px]">
-            {es ? (
-              <>Todo lo que tu negocio necesita, <em className="italic text-ink-2">nada que no</em>.</>
-            ) : (
-              <>Everything your business needs, <em className="italic text-ink-2">nothing it doesn&apos;t</em>.</>
-            )}
+            {es ? 'Qué encontrás en el panel.' : "What's inside the panel."}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-12">
@@ -608,12 +456,12 @@ export default function LandingPage() {
             <div className="bg-bg-elev border border-line rounded-2xl overflow-hidden flex flex-col hover:border-line-strong transition-all duration-200">
               <div className="px-7 pt-7 pb-0">
                 <h3 className="text-[18px] font-bold mb-2 tracking-[-0.01em]">
-                  {es ? 'Productos con foto' : 'Products with photos'}
+                  {es ? 'Tu catálogo, siempre actualizado' : 'Your catalog, always up to date'}
                 </h3>
                 <p className="text-sm text-ink-3 leading-[1.6] mb-6">
                   {es
-                    ? 'Subí imágenes, escribí descripciones, marcá tags como "vegano" o "sin gluten". Editás cuando quieras.'
-                    : 'Upload images, write descriptions, mark tags like "vegan" or "gluten-free". Edit whenever.'}
+                    ? 'Agregás, editás o pausás productos en segundos. Los cambios se reflejan en tu tienda al instante, sin tocar código.'
+                    : 'Add, edit or pause products in seconds. Changes show on your store instantly, no code needed.'}
                 </p>
               </div>
               <div className="mt-auto pt-3 px-7 pb-7 flex items-end justify-center min-h-[140px]">
@@ -766,15 +614,15 @@ export default function LandingPage() {
           </h2>
           <p className="text-[17px] text-ink-3 max-w-[560px] mb-14 leading-[1.55]">
             {es
-              ? 'Un solo precio mensual por el panel. El e-commerce está incluido sin costo y sin comisiones por venta.'
-              : 'One monthly price for the panel. The e-commerce is included free, with no sales commission.'}
+              ? 'Un solo precio mensual por el panel. La tienda online está incluida sin costo adicional.'
+              : 'One monthly price for the panel. The online store is included at no extra cost.'}
           </p>
 
           <div className="mt-12 max-w-[980px]">
             <div className="bg-ink text-white border border-ink rounded-2xl relative overflow-hidden">
               {/* Deal tag */}
               <span className="absolute top-4 right-4 bg-accent text-white text-[10px] font-bold px-2.5 py-1 rounded-full font-jb-mono tracking-[0.05em]">
-                {es ? 'OFERTA' : 'DEAL'}
+                BETA
               </span>
 
               <div className="grid grid-cols-1 md:grid-cols-[1fr_1.1fr]">
@@ -784,13 +632,13 @@ export default function LandingPage() {
                     {es ? 'Plan único' : 'Single plan'}
                   </h3>
                   <div className="font-display text-[56px] font-normal leading-none tracking-[-0.02em] mb-1 text-white">
-                    $30
+                    $10
                     <small className="font-manrope text-sm font-medium text-white/60 ml-1.5">
                       USD/{es ? 'mes' : 'mo'}
                     </small>
                   </div>
                   <div className="text-[12px] text-white/55 mb-8 font-jb-mono">
-                    {es ? '— primeros 3 meses · después $60/mes' : '— first 3 months · then $60/mo'}
+                    {es ? '— precio beta · después $25/mes' : '— beta price · then $25/mo'}
                   </div>
                   <p className="text-[13px] text-white/70 mb-8 leading-normal min-h-[36px]">
                     {es
@@ -810,7 +658,7 @@ export default function LandingPage() {
                 <div className="px-12 py-11 flex flex-col justify-center">
                   <ul className="flex flex-col gap-2.5 m-0">
                     {[
-                      es ? <><strong className="text-white">E-commerce incluido</strong> · sin comisiones por venta</> : <><strong className="text-white">E-commerce included</strong> · no sales commission</>,
+                      es ? <strong className="text-white">E-commerce incluido</strong> : <strong className="text-white">E-commerce included</strong>,
                       es ? 'Productos ilimitados, con fotos y tags' : 'Unlimited products, with photos and tags',
                       es ? 'Gestión de pedidos en tiempo real' : 'Real-time order management',
                       es ? 'Dashboard de métricas' : 'Metrics dashboard',
@@ -840,16 +688,12 @@ export default function LandingPage() {
           className="bg-ink text-white py-16 px-6 md:py-24 text-center rounded-2xl mt-4 mx-3 mb-10 md:mt-8 md:mx-6 md:mb-16 max-w-[1180px] w-full"
         >
           <h2 className="font-display font-normal text-[clamp(32px,4.5vw,52px)] leading-[1.1] tracking-[-0.02em] max-w-[640px] mx-auto mb-5 text-white">
-            {es ? (
-              <>¿Listo para profesionalizar <em className="italic text-white/45">tu tienda online</em>?</>
-            ) : (
-              <>Ready to take <em className="italic text-white/45">your online store</em> to the next level?</>
-            )}
+            {es ? '¿Querés tener tu propia tienda online?' : 'Ready to sell online?'}
           </h2>
-          <p className="text-[17px] text-white/65 max-w-[480px] mx-auto mb-8 leading-[1.55]">
+          <p className="text-[17px] text-white/65 max-w-[400px] mx-auto mb-8 leading-[1.55]">
             {es
-              ? 'Conversemos. Te muestro cómo se vería tu panel y resolvemos tus dudas en una breve llamada.'
-              : "Let's talk. I'll show you what your panel would look like and answer your questions in a short call."}
+              ? 'Escribinos por WhatsApp y te mostramos cómo quedaría tu tienda.'
+              : "Write to us. We'll show you what your store would look like and we'll get started whenever you're ready."}
           </p>
           <a
             href="https://wa.me/"
@@ -865,9 +709,9 @@ export default function LandingPage() {
       <footer className="pt-10 px-6 pb-14 border-t border-line">
         <div className="max-w-[1180px] mx-auto flex justify-between items-center flex-wrap gap-4">
           <span className="text-[13px] text-ink-3">
-            {es ? '© 2026 AdminPanel · Hecho por Fran' : '© 2026 AdminPanel · Made by Fran'}
+            © 2026 AdminPanel
           </span>
-          <span className="font-jb-mono text-[11px] text-ink-3">v1.0 · MVP</span>
+          <span className="font-jb-mono text-[11px] text-ink-3">v1.0 · BETA</span>
         </div>
       </footer>
 
