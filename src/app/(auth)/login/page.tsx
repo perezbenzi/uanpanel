@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 const loginSchema = z.object({
   email: z.email({ error: 'Enter a valid email' }),
@@ -103,9 +104,8 @@ export default function LoginPage() {
                 Forgot your password?
               </Link>
             </div>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="current-password"
               placeholder="••••••••"
               {...register('password')}

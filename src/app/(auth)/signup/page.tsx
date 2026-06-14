@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { createClient } from '@/lib/supabase/client'
 import { validateInviteCode, markInviteCodeUsed } from './actions'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 const signupSchema = z.object({
   inviteCode: z.string().min(8, { error: 'Code must be at least 8 characters' }),
@@ -233,9 +234,8 @@ export default function SignupPage() {
             <label htmlFor="password" className="text-sm font-medium text-black">
               Password
             </label>
-            <input
+            <PasswordInput
               id="password"
-              type="password"
               autoComplete="new-password"
               placeholder="••••••••"
               {...register('password')}

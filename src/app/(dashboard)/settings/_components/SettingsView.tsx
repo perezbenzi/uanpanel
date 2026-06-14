@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { updateProfile, updatePassword } from '../actions'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 type SectionFeedback = { error?: string; success?: boolean } | null
 
@@ -180,10 +181,9 @@ function PasswordForm() {
           <label htmlFor="current_password" className="text-[12px] font-medium text-[#71717a]">
             Current password
           </label>
-          <input
+          <PasswordInput
             id="current_password"
             name="current_password"
-            type="password"
             autoComplete="current-password"
             className={INPUT}
           />
@@ -195,10 +195,9 @@ function PasswordForm() {
             <label htmlFor="new_password" className="text-[12px] font-medium text-[#71717a]">
               New password
             </label>
-            <input
+            <PasswordInput
               id="new_password"
               name="new_password"
-              type="password"
               autoComplete="new-password"
               className={INPUT}
             />
@@ -210,10 +209,9 @@ function PasswordForm() {
             <label htmlFor="confirm_password" className="text-[12px] font-medium text-[#71717a]">
               Confirm new password
             </label>
-            <input
+            <PasswordInput
               id="confirm_password"
               name="confirm_password"
-              type="password"
               autoComplete="new-password"
               className={INPUT}
             />

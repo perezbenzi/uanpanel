@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
+import { PasswordInput } from '@/components/ui/PasswordInput'
 
 const INPUT_CLASS =
   'h-[42px] bg-[#fafafa] border border-[#e4e4e7] rounded-[10px] px-3.5 text-sm text-black placeholder:text-[#a1a1aa] focus:outline-none focus:border-[#71717a] transition-colors'
@@ -103,9 +104,8 @@ export default function ResetPasswordPage() {
                 <label htmlFor="new_password" className="text-sm font-medium text-black">
                   New password
                 </label>
-                <input
+                <PasswordInput
                   id="new_password"
-                  type="password"
                   autoComplete="new-password"
                   placeholder="••••••••"
                   value={newPassword}
@@ -121,9 +121,8 @@ export default function ResetPasswordPage() {
                 <label htmlFor="confirm_password" className="text-sm font-medium text-black">
                   Confirm password
                 </label>
-                <input
+                <PasswordInput
                   id="confirm_password"
-                  type="password"
                   autoComplete="new-password"
                   placeholder="••••••••"
                   value={confirmPassword}
