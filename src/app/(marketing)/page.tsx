@@ -157,15 +157,21 @@ export default function LandingPage() {
             {es ? 'Acceso beta · USD 10/mes los primeros 3 meses' : 'Beta access · USD 10/mo for the first 3 months'}
           </div>
 
-          {/* Headline */}
+          {/* Headline */}  
           <h1 className="font-display font-normal text-[clamp(40px,6vw,72px)] leading-[1.05] tracking-[-0.02em] max-w-[880px] mx-auto mb-6">
-            {es ? 'Tu tienda online, lista para usar.' : 'Your online store, ready to use.'}
-          </h1>
+          {es ? (
+            <>
+              Manejá tu negocio en Australia.{' '}
+              <br />
+              Tu <span className="text-[#166534]">tienda online</span> incluida.
+            </>
+          ) : 'Your online store, ready to use.'}
+        </h1>
 
           {/* Sub */}
           <p className="text-[clamp(16px,2vw,20px)] text-ink-3 max-w-[580px] mx-auto mb-9 leading-[1.55]">
             {es
-              ? 'Tienda online incluida gratis. Panel de gestión por $10/mes en beta, después $25/mes.'
+              ? 'Un panel simple para emprendedores en Australia que quieren vender online sin complicaciones.'
               : 'Online store included free. Management panel at $10/mo in beta, then $25/mo.'}
           </p>
 
@@ -329,54 +335,132 @@ export default function LandingPage() {
       <section id="how" className="py-16 md:py-24">
         <div className="max-w-[1180px] mx-auto px-5 md:px-6">
           <SectionEyebrow>{es ? '— Cómo funciona' : '— How it works'}</SectionEyebrow>
-          <h2 className="font-display font-normal text-[clamp(32px,4.5vw,52px)] leading-[1.1] tracking-[-0.02em] mb-4 max-w-[720px]">
-            {es ? 'Así funciona tu día a día.' : 'This is your daily flow.'}
-          </h2>
-          <p className="text-[17px] text-ink-3 max-w-[560px] mb-14 leading-[1.55]">
-            {es
-              ? 'Sin configuraciones. Solo aprendés a usar el panel.'
-              : 'No setup needed. You just learn to use the panel.'}
-          </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12">
-            {[
-              {
-                num: '01',
-                esH: 'Entra el pedido',
-                enH: 'Order comes in',
-                esP: 'Tu cliente compra desde tu tienda. Vos lo ves al instante en el panel.',
-                enP: 'Your customer buys from your store. You see it instantly in the panel.',
-              },
-              {
-                num: '02',
-                esH: 'Vos lo gestionás',
-                enH: 'You manage it',
-                esP: 'Cambiás el estado del pedido (pending → ready → collected) con un click. Tu cliente ve el progreso.',
-                enP: 'Change the order status (pending → ready → collected) with one click. Your customer sees the progress.',
-              },
-              {
-                num: '03',
-                esH: 'Todo queda registrado',
-                enH: 'Everything stays logged',
-                esP: 'Ingresos, pedidos y productos en un dashboard claro. Sin planillas dispersas ni información perdida.',
-                enP: 'Revenue, orders and products in one clear dashboard. No scattered spreadsheets, no missing data.',
-              },
-            ].map((step) => (
-              <div
-                key={step.num}
-                className="bg-bg-elev border border-line rounded-2xl p-7 transition-all duration-200 hover:border-line-strong hover:-translate-y-0.5"
-              >
-                <div className="inline-flex items-center justify-center w-8 h-8 bg-ink text-white rounded-lg font-jb-mono text-xs font-semibold mb-[18px]">
-                  {step.num}
-                </div>
-                <h3 className="font-display font-normal text-[26px] mb-2.5 tracking-[-0.01em]">
-                  {es ? step.esH : step.enH}
-                </h3>
-                <p className="text-ink-3 text-sm leading-[1.6]">
-                  {es ? step.esP : step.enP}
+          <div className="bg-bg rounded-2xl p-6 md:p-10 lg:p-12">
+            {/* Copy + mockup */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+              {/* Left: copy */}
+              <div>
+                <h2 className="font-display font-normal text-[clamp(28px,4vw,44px)] leading-[1.1] tracking-[-0.02em] text-ink mb-4">
+                  {es ? (
+                    <>¿De qué manera te 
+                    <br />
+                    ayuda el <span className="text-[#166534]">AdminPanel</span>?</>
+                  ) : (
+                    <>How does <span className="text-[#166534]">AdminPanel</span> help you?</>
+                  )}
+                </h2>
+                <p className="text-[17px] text-ink-3 leading-[1.55]">
+                  {es
+                    ? 'No hace falta que configures nada, nosotros desarrollamos tu tienda y vos solo manejás tus ventas desde el panel.'
+                    : "No setup needed — just manage your sales from the panel."}
                 </p>
               </div>
-            ))}
+
+              {/* Right: orders mockup */}
+              <div className="bg-white border border-line rounded-xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.08),0_4px_16px_rgba(0,0,0,0.06)]">
+                {/* Browser chrome bar */}
+                <div className="bg-[#f5f5f4] border-b border-line py-[10px] px-4 flex items-center gap-2">
+                  <span className="w-[11px] h-[11px] rounded-full bg-[#d4d4d4]" />
+                  <span className="w-[11px] h-[11px] rounded-full bg-[#d4d4d4]" />
+                  <span className="w-[11px] h-[11px] rounded-full bg-[#d4d4d4]" />
+                  <span className="mx-auto bg-white px-[14px] py-1 rounded-[6px] font-jb-mono text-[11px] text-ink-3 border border-line">
+                    app.tu-marca.com/pedidos
+                  </span>
+                </div>
+
+                <div className="p-4 md:p-5">
+                  <div className="text-[15px] font-bold text-ink mb-3 tracking-[-0.01em]">
+                    {es ? 'Pedidos' : 'Orders'}
+                  </div>
+
+                  {/* Tabs */}
+                  <div className="flex gap-1.5 mb-3">
+                    {(es ? ['Todos', 'Pending', 'Ready', 'Collected'] : ['All', 'Pending', 'Ready', 'Collected']).map((tab, i) => (
+                      <span
+                        key={tab}
+                        className={`px-2.5 py-1 rounded-full text-[11px] font-medium ${
+                          i === 0 ? 'bg-ink text-white' : 'text-ink-3'
+                        }`}
+                      >
+                        {tab}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Orders table */}
+                  <table className="w-full border-collapse text-[11px]">
+                    <thead>
+                      <tr>
+                        {[es ? 'Cliente' : 'Customer', 'Total', 'Status', es ? 'Fecha' : 'Date'].map((h) => (
+                          <th key={h} className="text-left px-2.5 py-2 border-b border-line text-[9px] text-ink-3 uppercase tracking-[0.05em] font-semibold">
+                            {h}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { name: 'Lucía Méndez', total: '$72',  v: 'ready'     as BadgeVariant, status: 'Ready',     date: '08 Jun' },
+                        { name: 'Tomás Reyes',  total: '$48',  v: 'pending'   as BadgeVariant, status: 'Pending',   date: '08 Jun' },
+                        { name: 'Pamela Souza', total: '$136', v: 'collected' as BadgeVariant, status: 'Collected', date: '07 Jun' },
+                        { name: 'Diego Acosta', total: '$96',  v: 'pending'   as BadgeVariant, status: 'Pending',   date: '07 Jun' },
+                      ].map((row, i, arr) => {
+                        const last = i === arr.length - 1
+                        const cell = `px-2.5 py-2 ${last ? '' : 'border-b border-line'}`
+                        return (
+                          <tr key={row.name}>
+                            <td className={`${cell} text-ink-2`}>{row.name}</td>
+                            <td className={`${cell} text-ink-2`}>{row.total}</td>
+                            <td className={cell}><StatusBadge variant={row.v}>{row.status}</StatusBadge></td>
+                            <td className={`${cell} text-ink-3`}>{row.date}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {/* Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-10 md:mt-16">
+              {[
+                {
+                  num: '01',
+                  esH: 'Recibís el pedido',
+                  enH: 'You get the order',
+                  esP: 'Tu cliente compra desde tu tienda, vos ves la venta al instante en el panel.',
+                  enP: 'Your customer buys from your store, you see the sale instantly in the panel.',
+                },
+                {
+                  num: '02',
+                  esH: 'Vos lo gestionás',
+                  enH: 'You manage it',
+                  esP: 'Cambiás el estado del pedido (pending, ready, collected) con un click.',
+                  enP: 'Change the order status (pending, ready, collected) with one click.',
+                },
+                {
+                  num: '03',
+                  esH: 'Todo queda registrado',
+                  enH: 'Everything is logged',
+                  esP: 'Ingresos, pedidos y productos en un dashboard claro.',
+                  enP: 'Revenue, orders and products in one clear dashboard.',
+                },
+              ].map((step) => (
+                <div key={step.num} className="bg-bg-elev border border-line rounded-xl p-6">
+                  <div className="font-jb-mono text-xs font-semibold text-[#166534] mb-3">
+                    {step.num}
+                  </div>
+                  <h3 className="text-ink text-[18px] font-bold mb-2 tracking-[-0.01em]">
+                    {es ? step.esH : step.enH}
+                  </h3>
+                  <p className="text-ink-3 text-sm leading-[1.6]">
+                    {es ? step.esP : step.enP}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -696,7 +780,7 @@ export default function LandingPage() {
               : "Write to us. We'll show you what your store would look like and we'll get started whenever you're ready."}
           </p>
           <a
-            href="https://wa.me/"
+            href="https://wa.me/61410461903"
             className="inline-flex items-center justify-center gap-1.5 px-[18px] py-[10px] rounded-lg font-semibold text-sm cursor-pointer border border-white bg-white text-ink no-underline transition-all duration-[150ms] whitespace-nowrap hover:bg-[#f5f5f4]"
           >
             <WhatsAppIcon />
