@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 
 function DashboardIcon({ className }: { className?: string }) {
@@ -73,8 +74,15 @@ export function Sidebar({
 }) {
   const pathname = usePathname()
   const router = useRouter()
+  const [loadingHref, setLoadingHref] = useState<string | null>(null)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  useEffect(() => {
+    setLoadingHref(null)
+  }, [pathname])
 
   async function handleLogout() {
+    setIsLoggingOut(true)
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/login')
@@ -108,16 +116,21 @@ export function Sidebar({
       <nav className="flex-1 px-2 py-3 flex flex-col gap-0.5 overflow-y-auto">
         {NAV_ITEMS.map(({ href, label, icon: Icon, badge }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/')
+          const isLoading = loadingHref === href
           return (
             <Link
               key={href}
               href={href}
-              onClick={onLinkClick}
+              onClick={() => {
+                if (!isActive) setLoadingHref(href)
+                onLinkClick?.()
+              }}
               className={[
                 'flex items-center gap-2.5 px-3 py-[7px] rounded-[8px] text-[13.5px] transition-colors',
                 isActive
                   ? 'bg-[#f4f4f5] text-black font-semibold'
                   : 'text-[#71717a] font-medium hover:bg-[#f4f4f5] hover:text-black',
+                isLoading ? 'opacity-50 pointer-events-none' : '',
               ].join(' ')}
             >
               <Icon className="w-[16px] h-[16px] flex-shrink-0" />
@@ -140,12 +153,15 @@ export function Sidebar({
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[13px] font-semibold text-black truncate">{userName || '—'}</p>
-            <p className="text-[11px] text-[#a1a1aa] leading-tight">owner</p>
+            <p className="text-[11px] text-[#a1a1aa] leading-tight">
+              {isLoggingOut ? 'Signing out...' : 'owner'}
+            </p>
           </div>
           <button
             onClick={handleLogout}
+            disabled={isLoggingOut}
             title="Sign out"
-            className="w-7 h-7 flex items-center justify-center rounded-[6px] text-[#a1a1aa] hover:text-black hover:bg-[#f4f4f5] transition-colors flex-shrink-0"
+            className="w-7 h-7 flex items-center justify-center rounded-[6px] text-[#a1a1aa] hover:text-black hover:bg-[#f4f4f5] transition-colors flex-shrink-0 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
               <path d="M6 2H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h3M10 10l3-2.5L10 5M13 7.5H6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

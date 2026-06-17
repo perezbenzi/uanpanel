@@ -19,6 +19,7 @@ type LoginForm = z.infer<typeof loginSchema>
 export default function LoginPage() {
   const router = useRouter()
   const [authError, setAuthError] = useState<string | null>(null)
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   const {
     register,
@@ -37,6 +38,7 @@ export default function LoginPage() {
       setAuthError('Incorrect email or password')
       return
     }
+    setIsRedirecting(true)
     router.push('/dashboard')
   }
 
@@ -119,10 +121,10 @@ export default function LoginPage() {
           {/* Submit */}
           <button
             type="submit"
-            disabled={isSubmitting}
+            disabled={isSubmitting || isRedirecting}
             className="h-[42px] w-full bg-black text-white rounded-[10px] text-sm font-semibold hover:bg-[#1a1a1a] disabled:opacity-50 disabled:cursor-not-allowed transition-colors mt-1"
           >
-            {isSubmitting ? 'Signing in...' : 'Sign in'}
+            {isSubmitting || isRedirecting ? 'Signing in...' : 'Sign in'}
           </button>
 
           {/* Auth error */}
