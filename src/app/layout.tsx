@@ -26,8 +26,21 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AdminPanel",
-  description: "Multi-tenant admin panel",
+  metadataBase: new URL("https://admin-panel-au.vercel.app"),
+  title: "AdminPanel - Tu negocio en un solo panel",
+  description:
+    "Panel de administración simple para emprendedores. Gestioná productos, pedidos y clientes desde un solo lugar, sin complicaciones.",
+  openGraph: {
+    title: "AdminPanel - Tu negocio en un solo panel",
+    description:
+      "Panel de administración simple para emprendedores. Gestioná productos, pedidos y clientes desde un solo lugar, sin complicaciones.",
+    images: [{ url: "/og-image-adminpanel.png", width: 1200, height: 630 }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og-image-adminpanel.png"],
+  },
 };
 
 export default function RootLayout({
